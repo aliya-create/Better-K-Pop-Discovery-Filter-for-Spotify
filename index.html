@@ -16,9 +16,13 @@
   .header{width:100%;max-width:420px;display:flex;align-items:center;justify-content:space-between}
   .pill{background:#111214;padding:8px 12px;border-radius:999px;font-weight:700}
   .filters{width:100%;max-width:420px;background:transparent;display:flex;gap:8px;flex-wrap:wrap}
-  .chip{background:#0b0c0d;padding:8px 10px;border-radius:999px;cursor:pointer;font-size:13px;border:1px solid rgba(255,255,255,0.04)}
+  /* CHIP: unselected = black bg + white text, selected = spotify green + dark text */
+  .chip{
+    background:#000;color:#fff;padding:8px 10px;border-radius:999px;cursor:pointer;font-size:13px;border:1px solid rgba(255,255,255,0.04);
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .chip .count{background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:999px;margin-left:8px;font-weight:700;font-size:11px}
   .chip.active{background:var(--accent);color:#041;box-shadow:0 6px 20px rgba(27,185,84,0.12)}
-  .chip .count{background:rgba(0,0,0,0.25);padding:2px 6px;border-radius:999px;margin-left:8px;font-weight:700;font-size:11px}
   .feed{width:100%;max-width:420px;height:68vh;position:relative;overflow:hidden;border-radius:14px}
   .card{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:18px;transition:transform .28s cubic-bezier(.2,.9,.2,1),opacity .28s;backdrop-filter: blur(6px)}
   .card.hidden{opacity:0;transform:translateY(20px) scale(.99);pointer-events:none}
@@ -29,9 +33,9 @@
   .artist img{width:44px;height:44px;border-radius:999px;object-fit:cover;border:2px solid rgba(255,255,255,0.06)}
   .title{font-weight:700}
   .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-  .tag{background:rgba(255,255,255,0.06);padding:6px 8px;border-radius:999px;font-size:12px}
+  .tag{background:rgba(255,255,255,0.06);padding:6px 8px;border-radius:999px;font-size:12px;color:#fff}
   .actions{display:flex;gap:8px;align-items:center}
-  .btn{background:rgba(255,255,255,0.06);border:0;padding:8px 10px;border-radius:10px;cursor:pointer}
+  .btn{background:rgba(255,255,255,0.06);border:0;padding:8px 10px;border-radius:10px;cursor:pointer;color:#fff}
   .heart{width:36px;height:36px;border-radius:9px;display:grid;place-items:center;transition:transform .18s}
   .heart.saved{background:linear-gradient(135deg,#ff6b8a,#ff9a9a);color:#111}
   .counter{position:absolute;left:12px;top:12px;background:rgba(0,0,0,0.28);padding:6px 10px;border-radius:999px;font-weight:700}
@@ -73,59 +77,74 @@
 
 <script>
 /*
- Prototype data
- - tracks have: id (spotify track id), artist, track, era, concept, group, vibeColor, artistImg (public URL)
- - we embed each track via Spotify embed: https://open.spotify.com/embed/track/{id}
+ Updated prototype data with your artist images and added tracks (ATEEZ, TWICE).
 */
 const TRACKS = [
   {
-    id: "1Zsy7gMUcHDhxC0bbyZmC2", // Monsta X GAMBLER (spotify page reference)
+    id: "1Zsy7gMUcHDhxC0bbyZmC2", // Monsta X — GAMBLER (demo)
     artist: "MONSTA X",
     track: "GAMBLER",
     era: "3rd Gen",
     concept: "dark",
     group: "boy",
     vibeColor: "#2b2a33",
-    artistImg: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=800&auto=format&fit=crop&crop=center" // placeholder/art fallback
+    artistImg: "https://ucarecdn.com/bb9910a8-3f95-423d-9569-7ef722782726/-/format/auto/-/preview/3000x3000/-/quality/lighter/"
   },
   {
-    id: "4XPXrcpyNr30Km6aPiflJy", // Stray Kids God's Menu (spotify)
+    id: "4XPXrcpyNr30Km6aPiflJy", // Stray Kids — God's Menu (demo)
     artist: "Stray Kids",
     track: "God's Menu",
     era: "4th Gen",
     concept: "performance",
     group: "boy",
     vibeColor: "#9b4dff",
-    artistImg: "https://images.unsplash.com/photo-1519677100203-a0e668c92439?q=80&w=800&auto=format&fit=crop&crop=center"
+    artistImg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQedFFWom--wlGfFVTvLKq1Iw0B_wwJEcY2lg&s"
   },
   {
-    id: "46E1ic6n099e76t5J1TbHn", // SHINee View (spotify)
+    id: "46E1ic6n099e76t5J1TbHn", // SHINee — View
     artist: "SHINee",
     track: "View",
     era: "2nd Gen",
     concept: "bright",
     group: "boy",
     vibeColor: "#1fb6ff",
-    artistImg: "https://images.unsplash.com/photo-1508921912186-1d1a45ebb3c1?q=80&w=800&auto=format&fit=crop&crop=center"
+    artistImg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQujaNIZx7w5V5lscD4d5QsOWQaPDqoEsNijQ&s"
   },
   {
-    id: "0ZeGfEAL5Rl4pd5LZBGuEK", // Hwasa Maria (spotify)
+    id: "0ZeGfEAL5Rl4pd5LZBGuEK", // HWASA — Maria
     artist: "HWASA",
     track: "Maria",
     era: "3rd Gen",
     concept: "healing",
     group: "solo",
     vibeColor: "#ff8da1",
-    artistImg: "https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=800&auto=format&fit=crop&crop=center"
+    artistImg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiGrUlNjFdLmd-kr9QJn30esQ3chvDlvIMIw&s"
+  },
+  {
+    id: "3Z4BxvgOJ8KupcDIV3OV2f", // ATEEZ — In Your Fantasy (your link)
+    artist: "ATEEZ",
+    track: "In Your Fantasy",
+    era: "4th Gen",
+    concept: "performance",
+    group: "boy",
+    vibeColor: "#ffb86b",
+    artistImg: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAVogPwuLtA1wGxRVOA1GByXEVQUL-n_5sFw&s"
+  },
+  {
+    id: "1Zr1SoGePJ3iKKakmmZaMR", // TWICE — SET ME FREE (your link)
+    artist: "TWICE",
+    track: "SET ME FREE",
+    era: "3rd Gen",
+    concept: "bright",
+    group: "girl",
+    vibeColor: "#ffd6e0",
+    artistImg: "https://www.billboard.com/wp-content/uploads/2023/02/feature-TWICE-women-in-music-billboard-2023-bb2-sunhye-shin-2-1260.jpg?w=875&h=583&crop=1"
   }
 ];
 
-// NOTE: artistImg currently uses Unsplash placeholders so the prototype works offline.
-// The real artist images I referenced for this demo are: News/gallery images for MONSTA X, Stray Kids, SHINee, Hwasa (see sources).
-// Spotify track references used for embeds: see documentation in the README below.
-
 const filtersSpec = {
   "Era": ["2nd Gen","3rd Gen","4th Gen"],
+  // concepts reduced to the three you emphasized (plus performance for variety)
   "Concept": ["dark","bright","healing","performance"],
   "Group": ["boy","girl","solo","co-ed"]
 };
@@ -140,6 +159,7 @@ const counterEl = document.getElementById('counter');
 const dotsEl = document.getElementById('dots');
 
 function createFilterChips(){
+  filtersEl.innerHTML = '';
   for(const [group, arr] of Object.entries(filtersSpec)){
     const label = document.createElement('div');
     label.style.width='100%';
@@ -147,7 +167,6 @@ function createFilterChips(){
     label.style.gap='8px';
     label.style.alignItems='center';
     label.style.flexWrap='wrap';
-    // group heading (small)
     const heading = document.createElement('div');
     heading.textContent = group + ':';
     heading.style.color = 'var(--muted)';
@@ -160,6 +179,7 @@ function createFilterChips(){
       chip.className='chip';
       chip.dataset.group = group;
       chip.dataset.opt = opt;
+      // when unselected: black bg + white text (visible) as you requested
       chip.innerHTML = `${opt} <span class="count" style="display:none">0</span>`;
       chip.addEventListener('click',()=>toggleFilter(chip));
       label.appendChild(chip);
@@ -192,7 +212,6 @@ function updateChipCounts(){
 function tMatchesFilter(item, filters){
   for(const [g,set] of Object.entries(filters)){
     if(set.size===0) continue;
-    // map label names to item keys
     if(g==="Era"){ if(!set.has(item.era)) return false; }
     if(g==="Concept"){ if(!set.has(item.concept)) return false; }
     if(g==="Group"){ if(!set.has(item.group)) return false; }
@@ -207,7 +226,6 @@ function updateFiltered(){
   }
   filtered = TRACKS.filter(t=> tMatchesFilter(t, active));
   if(filtered.length===0){
-    // show temporary message card
     renderNoResults();
     return;
   }
@@ -283,11 +301,9 @@ function renderFeed(){
       e.stopPropagation();
       const saved = heartBtn.classList.toggle('saved');
       heartBtn.innerHTML = heartSvg(saved);
-      // animate saved indicator
       if(saved){ showSavedAnim(card, t.track); }
     });
 
-    // add + follow simple interactions
     card.querySelector('button[title="Add to playlist"]').addEventListener('click', (ev)=>{
       ev.stopPropagation();
       flashMsg(card, 'Added to playlist');
@@ -313,7 +329,6 @@ function showSavedAnim(card, track){
 
 function updateUIControls(){
   counterEl.textContent = `${currentIndex+1} / ${filtered.length}`;
-  // update dots active
   Array.from(dotsEl.children).forEach((d,i)=>d.classList.toggle('active', i===currentIndex));
 }
 
@@ -323,9 +338,8 @@ let isTouch = false;
 const threshold = 60;
 
 function bindSwipe(){
-  // touch
   feed.addEventListener('touchstart', e=>{ isTouch=true; startY = e.touches[0].clientY; });
-  feed.addEventListener('touchmove', e=>{ /* prevent scroll inside feed on mobile */ e.preventDefault(); });
+  feed.addEventListener('touchmove', e=>{ e.preventDefault(); });
   feed.addEventListener('touchend', e=>{
     if(startY===null) return;
     const endY = e.changedTouches[0].clientY;
@@ -334,7 +348,6 @@ function bindSwipe(){
     startY = null;
   }, {passive:false});
 
-  // wheel for desktop
   let wheelCool = false;
   window.addEventListener('wheel', (e)=>{
     if(wheelCool) return;
@@ -383,7 +396,6 @@ function animateSlide(from, to, dir){
 
 /* tiny helpers */
 function hexAlpha(hex, a){
-  // hex like #rrggbb
   const c = hex.replace('#','');
   const r = parseInt(c.substring(0,2),16);
   const g = parseInt(c.substring(2,4),16);
@@ -417,4 +429,5 @@ window.addEventListener('keydown', (e)=>{
 </script>
 </body>
 </html>
+
 
