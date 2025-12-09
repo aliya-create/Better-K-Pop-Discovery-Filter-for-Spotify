@@ -1,204 +1,1073 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>K-Pop Discovery</title>
-  <style>
-    body {
-      margin: 0;
-      background-color: #000;
-      color: #fff;
-      font-family: 'Poppins', sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-Pop Discovery Prototype</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 1.5rem;
-      background: linear-gradient(to bottom, #000, transparent);
-    }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow: hidden;
+            height: 100vh;
+        }
 
-    header h1 {
-      font-size: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
+        .container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
 
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem;
-    }
+        /* Header */
+        .header {
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to bottom, #000, transparent);
+            z-index: 20;
+        }
 
-    .card {
-      width: 320px;
-      height: 420px;
-      perspective: 1000px;
-      margin-bottom: 2rem;
-    }
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
 
-    .card-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transition: transform 0.8s;
-      transform-style: preserve-3d;
-      cursor: pointer;
-    }
+        .sparkle {
+            color: #1db954;
+        }
 
-    .card:hover .card-inner {
-      transform: rotateY(180deg);
-    }
+        .header-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
 
-    .card-front, .card-back {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: 16px;
-      overflow: hidden;
-      backface-visibility: hidden;
-    }
+        .btn {
+            background: #27272a;
+            border: none;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
-    .card-front img, .card-back img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+        .btn:hover {
+            background: #3f3f46;
+        }
 
-    .card-back {
-      transform: rotateY(180deg);
-      background: linear-gradient(to bottom right, #111, #333);
-    }
+        .btn-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            padding: 0.5rem;
+            border-radius: 50%;
+        }
 
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      justify-content: center;
-      margin-bottom: 1.5rem;
-    }
+        .filter-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #1db954;
+            color: #000;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
 
-    .filters button {
-      background: #222;
-      color: #fff;
-      border: none;
-      border-radius: 50px;
-      padding: 0.5rem 1rem;
-      font-size: 0.85rem;
-      transition: background 0.2s;
-      cursor: pointer;
-    }
+        /* Quest Bar */
+        .quest-bar {
+            margin: 0 1rem 0.5rem;
+            background: linear-gradient(to right, #9333ea, #ec4899);
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    .filters button:hover, .filters .active {
-      background: #00ff99;
-      color: #000;
-      font-weight: bold;
-    }
+        .quest-content {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
 
-    .song-details {
-      text-align: center;
-    }
+        .quest-text h3 {
+            font-size: 0.875rem;
+            font-weight: bold;
+        }
 
-    .song-details h2 {
-      margin: 0;
-      font-size: 2rem;
-    }
+        .quest-text p {
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
 
-    .song-details p {
-      color: #bbb;
-      margin-top: 0.25rem;
-      margin-bottom: 1rem;
-    }
+        .quest-progress {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: bold;
+        }
 
-    .actions {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-    }
+        /* Filter Panel */
+        .filter-panel {
+            background: #18181b;
+            padding: 1rem;
+            border-bottom: 1px solid #27272a;
+            display: none;
+            z-index: 20;
+        }
 
-    .actions button {
-      background: #222;
-      border: none;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      color: #fff;
-      font-size: 1.25rem;
-      transition: 0.3s;
-    }
+        .filter-panel.active {
+            display: block;
+        }
 
-    .actions button:hover {
-      background: #00ff99;
-      color: #000;
-      transform: scale(1.1);
-    }
+        .filter-group {
+            margin-bottom: 1rem;
+        }
 
-    footer {
-      margin-top: 1rem;
-      color: #888;
-      font-size: 0.8rem;
-      text-align: center;
-    }
-  </style>
+        .filter-label {
+            color: #71717a;
+            font-size: 0.75rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-chip {
+            background: #27272a;
+            border: none;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            text-transform: capitalize;
+            transition: all 0.3s;
+        }
+
+        .filter-chip:hover {
+            background: #3f3f46;
+        }
+
+        .filter-chip.active {
+            background: #1db954;
+            color: #000;
+            font-weight: bold;
+        }
+
+        /* Track Display */
+        .track-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .background-gradient {
+            position: absolute;
+            inset: 0;
+            transition: all 0.5s;
+        }
+
+        .track-content {
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .track-card {
+            width: 100%;
+            max-width: 28rem;
+        }
+
+        /* Photocard Flip */
+        .photocard-container {
+            perspective: 1000px;
+            height: 420px;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+        }
+
+        .photocard-flip {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.7s;
+            transform-style: preserve-3d;
+        }
+
+        .photocard-flip.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .photocard-front, .photocard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .photocard-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(to bottom right, #18181b, #27272a);
+        }
+
+        .album-art {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photocard-tags {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .flip-hint {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+        }
+
+        .flip-hint p {
+            font-size: 0.75rem;
+            color: #d4d4d8;
+            margin-bottom: 0.25rem;
+        }
+
+        .flip-hint-action {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        /* Artist Photocard Back */
+        .artist-photocard {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .artist-photo {
+            width: 100%;
+            height: 75%;
+            object-fit: cover;
+        }
+
+        .artist-info {
+            flex: 1;
+            padding: 1rem;
+            background: linear-gradient(to top, #000, transparent);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .artist-info-card {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+        }
+
+        .artist-name {
+            font-size: 0.875rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .artist-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .artist-tag {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+
+        .tag-concept {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+        }
+
+        .tag-gen {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+        }
+
+        /* Track Info */
+        .track-info {
+            margin-bottom: 1.5rem;
+        }
+
+        .track-title {
+            font-size: 1.875rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .track-artist {
+            font-size: 1.25rem;
+            color: #a1a1aa;
+        }
+
+        /* Action Buttons */
+        .actions {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 1.5rem;
+        }
+
+        .action-btn {
+            width: 3.5rem;
+            height: 3.5rem;
+            background: #27272a;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            background: #3f3f46;
+        }
+
+        .action-btn.saved {
+            background: #1db954;
+            transform: scale(1.1);
+        }
+
+        .action-btn svg {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+
+        .action-btn.saved svg {
+            fill: #000;
+        }
+
+        /* Track Counter */
+        .track-counter {
+            text-align: center;
+            font-size: 0.875rem;
+            color: #71717a;
+        }
+
+        /* Swipe Hint */
+        .swipe-hint {
+            position: absolute;
+            bottom: 6rem;
+            left: 0;
+            right: 0;
+            text-align: center;
+        }
+
+        .swipe-hint p {
+            font-size: 0.75rem;
+            color: #71717a;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Navigation Dots */
+        .nav-dots {
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            background: #3f3f46;
+            border: none;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dot:hover {
+            background: #52525b;
+        }
+
+        .dot.active {
+            width: 2rem;
+            background: #1db954;
+        }
+
+        /* Particles */
+        .particle {
+            position: absolute;
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: explode 1s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+        }
+
+        /* Modal */
+        .modal {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 50;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #18181b;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 28rem;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #71717a;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .stat-card {
+            background: #27272a;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-value {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            color: #a1a1aa;
+            font-size: 0.875rem;
+        }
+
+        .stat-highlight {
+            background: linear-gradient(to right, #059669, #2563eb);
+            padding: 1rem;
+            border-radius: 0.75rem;
+        }
+
+        .stat-highlight .stat-label {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Icons */
+        .icon {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        .icon-lg {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>✨ K-Pop Discovery</h1>
-    <div>
-      <button style="background:none;border:none;color:white;font-size:1rem;">🏆</button>
-      <button style="background:none;border:none;color:white;font-size:1rem;">🎤</button>
-    </div>
-  </header>
-
-  <div class="container">
-    <!-- Filters -->
-    <div class="filters">
-      <button class="active">All Eras</button>
-      <button>2nd Gen</button>
-      <button>3rd Gen</button>
-      <button>4th Gen</button>
-      <button>Performance</button>
-      <button>Dark</button>
-      <button>Bright</button>
-      <button>Healing</button>
-    </div>
-
-    <!-- Song Card (SHINee example) -->
-    <div class="card">
-      <div class="card-inner">
-        <div class="card-front">
-          <img src="https://i.scdn.co/image/ab67616d0000b2737b2a191ee8bd10475a2b3f8a" alt="Sherlock Album Cover">
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-title">
+                <span class="sparkle">✨</span>
+                <span>K-Pop Discovery</span>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-icon" onclick="showStats()">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </button>
+                <button class="btn" onclick="toggleFilters()">
+                    <span>Filters</span>
+                    <span id="filterBadge" class="filter-badge" style="display: none;">0</span>
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+            </div>
         </div>
-        <div class="card-back">
-          <img src="https://i.scdn.co/image/ab6761610000e5eb2f854dfb0e634f9a8ec1e894" alt="SHINee Artist Photo">
+
+        <!-- Quest Bar -->
+        <div class="quest-bar" id="questBar">
+            <div class="quest-content">
+                <span>🏆</span>
+                <div class="quest-text">
+                    <h3>Daily Quest</h3>
+                    <p>Save 10 tracks for a photocard badge</p>
+                </div>
+            </div>
+            <div class="quest-progress">
+                <span id="questProgress">0/10</span>
+                <button style="background: none; border: none; color: rgba(255,255,255,0.7); cursor: pointer;" onclick="hideQuest()">✕</button>
+            </div>
         </div>
-      </div>
+
+        <!-- Filter Panel -->
+        <div class="filter-panel" id="filterPanel">
+            <div class="filter-group">
+                <label class="filter-label">ERA</label>
+                <div class="filter-options">
+                    <button class="filter-chip active" onclick="setFilter('era', 'all')">All Eras</button>
+                    <button class="filter-chip" onclick="setFilter('era', '2nd')">2nd Gen</button>
+                    <button class="filter-chip" onclick="setFilter('era', '3rd')">3rd Gen</button>
+                    <button class="filter-chip" onclick="setFilter('era', '4th')">4th Gen</button>
+                </div>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">CONCEPT</label>
+                <div class="filter-options">
+                    <button class="filter-chip active" onclick="setFilter('concept', 'all')">All Concepts</button>
+                    <button class="filter-chip" onclick="setFilter('concept', 'dark')">Dark</button>
+                    <button class="filter-chip" onclick="setFilter('concept', 'bright')">Bright</button>
+                    <button class="filter-chip" onclick="setFilter('concept', 'healing')">Healing</button>
+                    <button class="filter-chip" onclick="setFilter('concept', 'performance')">Performance</button>
+                </div>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">GROUP TYPE</label>
+                <div class="filter-options">
+                    <button class="filter-chip active" onclick="setFilter('groupType', 'all')">All Types</button>
+                    <button class="filter-chip" onclick="setFilter('groupType', 'boy')">Boy Group</button>
+                    <button class="filter-chip" onclick="setFilter('groupType', 'girl')">Girl Group</button>
+                    <button class="filter-chip" onclick="setFilter('groupType', 'solo')">Solo</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Track Display -->
+        <div class="track-container">
+            <div class="background-gradient" id="bgGradient"></div>
+            <div class="track-content">
+                <div class="track-card">
+                    <!-- Photocard -->
+                    <div class="photocard-container" onclick="flipCard()">
+                        <div class="photocard-flip" id="photocardFlip">
+                            <!-- Front -->
+                            <div class="photocard-front">
+                                <img class="album-art" id="albumArt" src="" alt="">
+                                <div class="photocard-tags">
+                                    <span class="tag" id="eraTag"></span>
+                                    <span class="tag" id="conceptTag"></span>
+                                </div>
+                                <div class="flip-hint">
+                                    <p>Tap to flip for photocard</p>
+                                    <div class="flip-hint-action">
+                                        <span>📸</span>
+                                        <span>Artist Photo Inside</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Back -->
+                            <div class="photocard-back">
+                                <div class="artist-photocard">
+                                    <img class="artist-photo" id="artistPhoto" src="" alt="">
+                                    <div class="artist-info">
+                                        <div class="artist-info-card">
+                                            <p class="artist-name" id="artistName"></p>
+                                            <div class="artist-tags">
+                                                <span class="artist-tag tag-concept" id="backConceptTag"></span>
+                                                <span class="artist-tag tag-gen" id="backGenTag"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Track Info -->
+                    <div class="track-info">
+                        <h2 class="track-title" id="trackTitle"></h2>
+                        <p class="track-artist" id="trackArtist"></p>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="actions">
+                        <button class="action-btn" id="saveBtn" onclick="toggleSave(event)">
+                            <svg class="icon-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </button>
+                        <button class="action-btn">
+                            <svg class="icon-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                            </svg>
+                        </button>
+                        <button class="action-btn">
+                            <svg class="icon-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Track Counter -->
+                    <div class="track-counter">
+                        <span id="trackCounter">1 of 8 tracks</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Swipe Hint -->
+            <div class="swipe-hint">
+                <p>Swipe up/down • Tap card to flip</p>
+            </div>
+        </div>
+
+        <!-- Navigation Dots -->
+        <div class="nav-dots" id="navDots"></div>
+
+        <!-- Stats Modal -->
+        <div class="modal" id="statsModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Session Stats</h2>
+                    <button class="close-btn" onclick="hideStats()">✕</button>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">
+                        <span style="color: #1db954; font-size: 1.5rem;">❤️</span>
+                        <span class="stat-number" id="statSaves">0</span>
+                    </div>
+                    <p class="stat-label">Tracks Saved</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">
+                        <span style="color: #a855f7; font-size: 1.5rem;">🎵</span>
+                        <span class="stat-number" id="statSwipes">0</span>
+                    </div>
+                    <p class="stat-label">Tracks Explored</p>
+                </div>
+                <div class="stat-highlight">
+                    <div class="stat-value">
+                        <span style="color: #fbbf24; font-size: 1.5rem;">⭐</span>
+                        <span class="stat-number" id="statBias">Multi-Stan</span>
+                    </div>
+                    <p class="stat-label">Your Bias Era</p>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="song-details">
-      <h2>Sherlock</h2>
-      <p>by SHINee</p>
-      <p style="font-size:0.9rem;color:#aaa;">Concept: Performance • Era: 2nd Gen</p>
-    </div>
+    <script>
+        const tracks = [
+            {
+                id: 1,
+                title: "Rush Hour",
+                artist: "Monsta X",
+                era: "3rd",
+                concept: "dark",
+                groupType: "boy",
+                image: "https://i.scdn.co/image/ab67616d0000b273c8b3df8e9eb6f5f96b9b1e11",
+                artistPhoto: "https://i.scdn.co/image/ab6761610000e5eb739897b2c222c4564e5d57d9",
+                color: "#1a1a2e"
+            },
+            {
+                id: 2,
+                title: "MANIAC",
+                artist: "Stray Kids",
+                era: "4th",
+                concept: "dark",
+                groupType: "boy",
+                image: "https://i.scdn.co/image/ab67616d0000b273c0ddb8326b284fe0f543e27d",
+                artistPhoto: "https://i.scdn.co/image/ab6761610000e5eb619d85b4f1fb56e23e6d8a6f",
+                color: "#8B0000"
+            },
+            {
+                id: 3,
+                title: "Maria",
+                artist: "Hwasa",
+                era: "3rd",
+                concept: "healing",
+                groupType: "solo",
+                image: "https://i.scdn.co/image/ab67616d0000b273c8b444df094279e70cd6e8a9",
+                artistPhoto: "https://i.scdn.co/image/ab6761610000e5eb4c8f1a90f4f27e644c866e32",
+                color: "#4a0e4e"
+            },
+            {
+                id: 4,
+                title: "Gambler",
+                artist: "Monsta X",
+                era: "3rd",
+                concept: "performance",
+                groupType: "boy",
+                image: "https://i.scdn.co/image/ab67616d0000b2732be6f2a8c1dee38e0aa54ed4",
+                artistPhoto: "https://i.scdn.co/image/ab6761610000e5eb739897b2c222c4564e5d57d9",
+                color: "#c41e3a"
+            },
+            {
+                id: 5,
+                title: "Sherlock",
+                artist: "SHINee",
+                era: "2nd",
+                concept: "performance",
+                groupType: "boy",
+                image: "https://i.scdn.co/image/ab67616d0000b2737b2a191ee8bd10475a2b3f8a",
+                artistPhoto: "https://i.scdn.co/image/ab6761610000e5eb2f854dfb0e634f9a8ec1e894",
+                color: "#0f4c81"
+            },
+            {
+                id: 6,
+                title: "God's Menu",
+                artist: "Stray Kids",
+                era: "4th",
+                concept: "performance",
+                groupType: "boy",
+                image: "https://i.scdn.co/image/ab67616d0000b273a7eb00c2e68c04e6f32cd21d",
+                artistPhoto: "https://i.scdn.co/image/ab6761610000e5eb619d85b4f1fb56e23e6d8a6f",
+                color: "#d4af37"
+            },
+            {
+                id: 7,
+                title: "View",
+                artist: "SHINee",
+                era: "2nd",
+                concept: "bright",
+                groupType: "boy",
+                image: "https://i.scdn.co/image/ab67616d0000b2733e9c5b3e07f3ea9f3f6e6e88",
+                artistPhoto: "https://i.scdn.co/image/ab6761610000e5eb2f854dfb0e634f9a8ec1e894",
+                color: "#87ceeb"
+            },
+            {
+                id: 8,
+                title: "Hero",
+                artist: "Monsta X",
+                era: "3rd",
+                concept: "dark",
+                groupType: "boy",
+                image: "https://i.scdn.co/image/ab67616d0000b273f4d0e114e5a698e0e94e7f11",
+                artistPhoto: "https://i.scdn.co/image/ab6761610000e5eb739897b2c222c4564e5d57d9",
+                color: "#2c3e50"
+            }
+        ];
 
-    <!-- Buttons -->
-    <div class="actions">
-      <button>❤️</button>
-      <button>➕</button>
-      <button>👤</button>
-    </div>
+        let currentTrack = 0;
+        let savedTracks = new Set();
+        let filters = { era: 'all', concept: 'all', groupType: 'all' };
+        let stats = { saves: 0, swipes: 0 };
+        let questProgress = 0;
+        let filteredTracks = [...tracks];
 
-    <footer>
-      Swipe feature & filters simulated for HTML version.
-    </footer>
-  </div>
+        function updateDisplay() {
+            const track = filteredTracks[currentTrack];
+            if (!track) return;
 
-  <script>
-    // Basic image flipping already handled by CSS hover effect
-  </script>
+            document.getElementById('albumArt').src = track.image;
+            document.getElementById('artistPhoto').src = track.artistPhoto;
+            document.getElementById('trackTitle').textContent = track.title;
+            document.getElementById('trackArtist').textContent = track.artist;
+            document.getElementById('artistName').textContent = track.artist;
+            document.getElementById('eraTag').textContent = track.era + ' Gen';
+            document.getElementById('conceptTag').textContent = track.concept;
+            document.getElementById('backConceptTag').textContent = track.concept + ' Concept';
+            document.getElementById('backGenTag').textContent = track.era + ' Gen ' + track.groupType + ' Group';
+            document.getElementById('trackCounter').textContent = `${currentTrack + 1} of ${filteredTracks.length} tracks`;
+            document.getElementById('bgGradient').style.background = `linear-gradient(to bottom, ${track.color}40 0%, black 60%)`;
+
+            // Update save button
+            const saveBtn = document.getElementById('saveBtn');
+            if (savedTracks.has(track.id)) {
+                saveBtn.classList.add('saved');
+            } else {
+                saveBtn.classList.remove('saved');
+            }
+
+            // Update nav dots
+            updateNavDots();
+
+            // Reset flip
+            document.getElementById('photocardFlip').classList.remove('flipped');
+        }
+
+        function updateNavDots() {
+            const dotsContainer = document.getElementById('navDots');
+            dotsContainer.innerHTML = '';
+            filteredTracks.slice(0, 8).forEach((_, idx) => {
+                const dot = document.createElement('button');
+                dot.className = 'dot' + (idx === currentTrack ? ' active' : '');
+                dot.onclick = () => {
+                    currentTrack = idx;
+                    stats.swipes++;
+                    updateDisplay();
+                };
+                dotsContainer.appendChild(dot);
+            });
+        }
+
+        function nextTrack() {
+            if (currentTrack < filteredTracks.length - 1) {
+                currentTrack++;
+                stats.swipes++;
+                updateDisplay();
+            }
+        }
+
+        function prevTrack() {
+            if (currentTrack > 0) {
+                currentTrack--;
+                stats.swipes++;
+                updateDisplay();
+            }
+        }
+
+        function flipCard() {
+            document.getElementById('photocardFlip').classList.toggle('flipped');
+        }
+
+        function toggleSave(event) {
+            const track = filteredTracks[currentTrack];
+            if (savedTracks.has(track.id)) {
+                savedTracks.delete(track.id);
+            } else {
+                savedTracks.add(track.id);
+                stats.saves++;
+                questProgress = Math.min(questProgress + 1, 10);
+                document.getElementById('questProgress').textContent = questProgress + '/10';
+                createParticles(event.clientX, event.clientY, track.concept);
+            }
+            updateDisplay();
+            updateStats();
+        }
+
+        function createParticles(x, y, concept) {
+            const colors = {
+                dark: ['#8B0000', '#1a1a2e', '#4B0082'],
+                bright: ['#FFD700', '#FF69B4', '#00CED1'],
+                healing: ['#9370DB', '#DDA0DD', '#E6E6FA'],
+                performance: ['#FF4500', '#FFD700', '#FF1493']
+            };
+            
+            const particleColors = colors[concept] || colors.dark;
+            
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.backgroundColor = particleColors[Math.floor(Math.random() * particleColors.length)];
+                
+                const angle = (Math.PI * 2 * i) / 20;
+                const velocity = 2 + Math.random() * 3;
+                particle.style.transform = `translate(${Math.cos(angle) * velocity * 50}px, ${Math.sin(angle) * velocity * 50}px)`;
+                
+                document.body.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 1000);
+            }
+        }
+
+        function toggleFilters() {
+            const panel = document.getElementById('filterPanel');
+            panel.classList.toggle('active');
+        }
+
+        function setFilter(type, value) {
+            filters[type] = value;
+            
+            // Update UI
+            const parent = event.target.parentElement;
+            parent.querySelectorAll('.filter-chip').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Apply filters
+            filteredTracks = tracks.filter(track => {
+                if (filters.era !== 'all' && track.era !== filters.era) return false;
+                if (filters.concept !== 'all' && track.concept !== filters.concept) return false;
+                if (filters.groupType !== 'all' && track.groupType !== filters.groupType) return false;
+                return true;
+            });
+            
+            currentTrack = 0;
+            updateDisplay();
+            updateFilterBadge();
+            
+            // Close filters
+            setTimeout(() => {
+                document.getElementById('filterPanel').classList.remove('active');
+            }, 300);
+        }
+
+        function updateFilterBadge() {
+            const count = Object.values(filters).filter(f => f !== 'all').length;
+            const badge = document.getElementById('filterBadge');
+            if (count > 0) {
+                badge.style.display = 'flex';
+                badge.textContent = count;
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        function showStats() {
+            document.getElementById('statsModal').classList.add('active');
+            updateStats();
+        }
+
+        function hideStats() {
+            document.getElementById('statsModal').classList.remove('active');
+        }
+
+        function updateStats() {
+            document.getElementById('statSaves').textContent = stats.saves;
+            document.getElementById('statSwipes').textContent = stats.swipes;
+            
+            let biasEra = 'Multi-Stan';
+            if (filters.era !== 'all') {
+                biasEra = filters.era + ' Gen';
+                if (filters.concept !== 'all') {
+                    biasEra += ' ' + filters.concept;
+                }
+            } else if (filters.concept !== 'all') {
+                biasEra = filters.concept;
+            }
+            document.getElementById('statBias').textContent = biasEra;
+        }
+
+        function hideQuest() {
+            document.getElementById('questBar').style.display = 'none';
+        }
+
+        // Swipe handling
+        let startY = 0;
+        let startX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            startY = e.touches[0].clientY;
+            startX = e.touches[0].clientX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            const endY = e.changedTouches[0].clientY;
+            const endX = e.changedTouches[0].clientX;
+            const diffY = startY - endY;
+            const diffX = Math.abs(startX - endX);
+            
+            // Only swipe if mostly vertical
+            if (Math.abs(diffY) > 50 && diffX < 50) {
+                if (diffY > 0) {
+                    nextTrack();
+                } else {
+                    prevTrack();
+                }
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowUp') {
+                nextTrack();
+            } else if (e.key === 'ArrowDown') {
+                prevTrack();
+            } else if (e.key === ' ') {
+                e.preventDefault();
+                flipCard();
+            }
+        });
+
+        // Initialize
+        updateDisplay();
+    </script>
 </body>
 </html>
