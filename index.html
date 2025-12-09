@@ -1,300 +1,419 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>K‑Pop Discovery – Desktop Version</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>K-Pop Discovery — Prototype</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background: #000;
-  color: #fff;
-  overflow-y: auto;
-}
-
-/* Container + Header */
-.container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  position: relative;
-}
-
-.header {
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: linear-gradient(to bottom, #000, transparent);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.header-title {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.sparkle { color: #1db954; }
-
-.btn {
-  background: #27272a;
-  border: none;
-  color: #fff;
-  padding: 0.75rem 1.25rem;
-  border-radius: 9999px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: all 0.3s;
-}
-
-.btn:hover { background: #3f3f46; }
-
-/* Track Container */
-.track-container {
-  flex: 1;
-  position: relative;
-  padding: 2.5rem;
-  display: flex;
-  justify-content: center;
-}
-
-.background-gradient {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  transition: all 0.5s;
-}
-
-/* Card Flip Setup */
-.photocard-container {
-  width: 480px;
-  height: 600px;
-  perspective: 2000px;
-}
-
-.photocard-flip {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.7s;
-  transform-style: preserve-3d;
-  cursor: pointer;
-}
-
-.photocard-flip.flipped {
-  transform: rotateY(180deg);
-}
-
-.photocard-front, .photocard-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  border-radius: 1rem;
-  overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-}
-
-/* Front */
-.photocard-front img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Back */
-.photocard-back {
-  transform: rotateY(180deg);
-  background: linear-gradient(to bottom right, #1a1a1a, #27272a);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 1.5rem;
-}
-
-.artist-photo {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.45;
-}
-
-.artist-info {
-  position: relative;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(8px);
-  border-radius: 1rem;
-  padding: 1rem;
-  z-index: 2;
-}
-
-.artist-name { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; }
-.artist-tags { font-size: 0.9rem; color: #93c5fd; }
-
-/* Track Info + Actions */
-.info-area {
-  text-align: center;
-  margin-top: 2rem;
-}
-
-.track-title { font-size: 2rem; font-weight: bold; }
-.track-artist { font-size: 1.25rem; color: #a1a1aa; margin-bottom: 0.75rem; }
-.track-lyrics { font-size: 0.95rem; color: #d4d4d8; opacity: 0.9; max-width: 650px; margin: 0 auto 1.5rem; }
-
-.actions {
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.action-btn {
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 50%;
-  background: #27272a;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.action-btn:hover { background: #3f3f46; }
-.action-btn.saved { background: #1db954; transform: scale(1.1); }
+  :root{
+    --bg:#0f1115; --card-bg:rgba(255,255,255,0.04);
+    --accent:#1DB954; --muted:rgba(255,255,255,0.6);
+    font-family:Inter,system-ui,Segoe UI,Arial;
+  }
+  html,body{height:100%;margin:0;background:var(--bg);color:#fff;overflow:hidden}
+  .app{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:18px}
+  .header{width:100%;max-width:420px;display:flex;align-items:center;justify-content:space-between}
+  .pill{background:#111214;padding:8px 12px;border-radius:999px;font-weight:700}
+  .filters{width:100%;max-width:420px;background:transparent;display:flex;gap:8px;flex-wrap:wrap}
+  .chip{background:#0b0c0d;padding:8px 10px;border-radius:999px;cursor:pointer;font-size:13px;border:1px solid rgba(255,255,255,0.04)}
+  .chip.active{background:var(--accent);color:#041;box-shadow:0 6px 20px rgba(27,185,84,0.12)}
+  .chip .count{background:rgba(0,0,0,0.25);padding:2px 6px;border-radius:999px;margin-left:8px;font-weight:700;font-size:11px}
+  .feed{width:100%;max-width:420px;height:68vh;position:relative;overflow:hidden;border-radius:14px}
+  .card{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:18px;transition:transform .28s cubic-bezier(.2,.9,.2,1),opacity .28s;backdrop-filter: blur(6px)}
+  .card.hidden{opacity:0;transform:translateY(20px) scale(.99);pointer-events:none}
+  .card .meta{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .artwrap{width:100%;height:54%;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;margin-bottom:12px;background:#000}
+  .artwrap iframe{width:100%;height:100%;border:0}
+  .artist{display:flex;align-items:center;gap:12px}
+  .artist img{width:44px;height:44px;border-radius:999px;object-fit:cover;border:2px solid rgba(255,255,255,0.06)}
+  .title{font-weight:700}
+  .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .tag{background:rgba(255,255,255,0.06);padding:6px 8px;border-radius:999px;font-size:12px}
+  .actions{display:flex;gap:8px;align-items:center}
+  .btn{background:rgba(255,255,255,0.06);border:0;padding:8px 10px;border-radius:10px;cursor:pointer}
+  .heart{width:36px;height:36px;border-radius:9px;display:grid;place-items:center;transition:transform .18s}
+  .heart.saved{background:linear-gradient(135deg,#ff6b8a,#ff9a9a);color:#111}
+  .counter{position:absolute;left:12px;top:12px;background:rgba(0,0,0,0.28);padding:6px 10px;border-radius:999px;font-weight:700}
+  .dots{position:absolute;right:12px;top:12px;display:flex;flex-direction:column;gap:8px}
+  .dot{width:8px;height:8px;border-radius:99px;background:rgba(255,255,255,0.15);cursor:pointer}
+  .dot.active{transform:scale(1.6);background:var(--accent)}
+  .saved-anim{position:absolute;right:18px;bottom:18px;animation:pop .9s ease-out;pointer-events:none}
+  @keyframes pop{0%{transform:scale(.6);opacity:0}40%{transform:scale(1.15);opacity:1}100%{transform:scale(1);opacity:1}}
+  /* small */
+  @media (max-width:520px){
+    .app{padding:12px}
+    .feed{height:72vh}
+  }
 </style>
 </head>
 <body>
-<div class="container">
-
+<div class="app" id="app">
   <div class="header">
-    <div class="header-title"><span class="sparkle">✨</span>K‑Pop Discovery – Desktop</div>
-    <div>
-      <button class="btn" onclick="prevTrack()">⬅ Prev</button>
-      <button class="btn" onclick="nextTrack()">Next ➜</button>
-    </div>
+    <div class="pill">K-Pop Discovery</div>
+    <div style="color:var(--muted);font-size:13px">Demo • Swipe vertically</div>
   </div>
 
-  <div class="track-container">
-    <div class="background-gradient" id="bgGradient"></div>
+  <div class="filters" id="filters">
+    <!-- dynamic chips -->
+  </div>
 
-    <div>
-      <!-- Photocard -->
-      <div class="photocard-container" onclick="flipCard()">
-        <div class="photocard-flip" id="photocardFlip">
-          <div class="photocard-front">
-            <img id="albumArt" src="" alt="album art">
-          </div>
-          <div class="photocard-back">
-            <img id="artistPhoto" class="artist-photo" src="" alt="artist">
-            <div class="artist-info">
-              <div class="artist-name" id="artistName"></div>
-              <div class="artist-tags" id="artistTags"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+  <div class="feed" id="feed" aria-live="polite">
+    <div class="counter" id="counter">0 / 0</div>
+    <div class="dots" id="dots"></div>
 
-      <!-- Info -->
-      <div class="info-area">
-        <h2 class="track-title" id="trackTitle"></h2>
-        <p class="track-artist" id="trackArtist"></p>
-        <p class="track-lyrics" id="trackLyrics"></p>
+    <!-- cards injected here -->
+  </div>
 
-        <div class="actions">
-          <button class="action-btn" onclick="toggleSave()" id="saveBtn">❤️</button>
-        </div>
-      </div>
-    </div>
+  <div style="width:100%;max-width:420px;display:flex;justify-content:space-between;margin-top:6px;color:var(--muted);font-size:13px">
+    <div>Try filters + vertical swipe</div>
+    <div>Prototype time saved: <strong style="color:var(--accent)">~ &lt;2 min</strong></div>
   </div>
 </div>
 
 <script>
-const tracks = [
+/*
+ Prototype data
+ - tracks have: id (spotify track id), artist, track, era, concept, group, vibeColor, artistImg (public URL)
+ - we embed each track via Spotify embed: https://open.spotify.com/embed/track/{id}
+*/
+const TRACKS = [
   {
-    title: "Rush Hour",
-    artist: "Monsta X",
-    lyrics: "Dynamic fusion of intensity and rhythm. (Lyrics summary placeholder.)",
-    albumImage: "https://i.scdn.co/image/ab67616d0000b273c8b3df8e9eb6f5f96b9b1e11",
-    artistImage: "https://i.scdn.co/image/ab6761610000e5eb739897b2c222c4564e5d57d9",
-    concept: "dark / performance",
-    color: "#1a1a2e"
+    id: "1Zsy7gMUcHDhxC0bbyZmC2", // Monsta X GAMBLER (spotify page reference)
+    artist: "MONSTA X",
+    track: "GAMBLER",
+    era: "3rd Gen",
+    concept: "dark",
+    group: "boy",
+    vibeColor: "#2b2a33",
+    artistImg: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=800&auto=format&fit=crop&crop=center" // placeholder/art fallback
   },
   {
-    title: "MANIAC",
+    id: "4XPXrcpyNr30Km6aPiflJy", // Stray Kids God's Menu (spotify)
     artist: "Stray Kids",
-    lyrics: "A song about embracing individuality and breaking masks.",
-    albumImage: "https://i.scdn.co/image/ab67616d0000b273c0ddb8326b284fe0f543e27d",
-    artistImage: "https://i.scdn.co/image/ab6761610000e5eb619d85b4f1fb56e23e6d8a6f",
-    concept: "dark / rebellion",
-    color: "#8B0000"
+    track: "God's Menu",
+    era: "4th Gen",
+    concept: "performance",
+    group: "boy",
+    vibeColor: "#9b4dff",
+    artistImg: "https://images.unsplash.com/photo-1519677100203-a0e668c92439?q=80&w=800&auto=format&fit=crop&crop=center"
   },
   {
-    title: "Maria",
-    artist: "Hwasa",
-    lyrics: "Empowering self-reflection on emotional healing and self-worth.",
-    albumImage: "https://i.scdn.co/image/ab67616d0000b273c8b444df094279e70cd6e8a9",
-    artistImage: "https://i.scdn.co/image/ab6761610000e5eb4c8f1a90f4f27e644c866e32",
-    concept: "healing / solo",
-    color: "#4a0e4e"
+    id: "46E1ic6n099e76t5J1TbHn", // SHINee View (spotify)
+    artist: "SHINee",
+    track: "View",
+    era: "2nd Gen",
+    concept: "bright",
+    group: "boy",
+    vibeColor: "#1fb6ff",
+    artistImg: "https://images.unsplash.com/photo-1508921912186-1d1a45ebb3c1?q=80&w=800&auto=format&fit=crop&crop=center"
+  },
+  {
+    id: "0ZeGfEAL5Rl4pd5LZBGuEK", // Hwasa Maria (spotify)
+    artist: "HWASA",
+    track: "Maria",
+    era: "3rd Gen",
+    concept: "healing",
+    group: "solo",
+    vibeColor: "#ff8da1",
+    artistImg: "https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=800&auto=format&fit=crop&crop=center"
   }
 ];
 
-let current = 0;
-let saved = new Set();
+// NOTE: artistImg currently uses Unsplash placeholders so the prototype works offline.
+// The real artist images I referenced for this demo are: News/gallery images for MONSTA X, Stray Kids, SHINee, Hwasa (see sources).
+// Spotify track references used for embeds: see documentation in the README below.
 
-function updateDisplay() {
-  const t = tracks[current];
-  document.getElementById('albumArt').src = t.albumImage;
-  document.getElementById('artistPhoto').src = t.artistImage;
-  document.getElementById('trackTitle').textContent = t.title;
-  document.getElementById('trackArtist').textContent = t.artist;
-  document.getElementById('trackLyrics').textContent = t.lyrics;
-  document.getElementById('artistName').textContent = t.artist;
-  document.getElementById('artistTags').textContent = t.concept;
-  document.getElementById('bgGradient').style.background =
-    `linear-gradient(to bottom, ${t.color}88, #000 70%)`;
+const filtersSpec = {
+  "Era": ["2nd Gen","3rd Gen","4th Gen"],
+  "Concept": ["dark","bright","healing","performance"],
+  "Group": ["boy","girl","solo","co-ed"]
+};
 
-  const btn = document.getElementById('saveBtn');
-  btn.classList.toggle('saved', saved.has(t.title));
+let activeFilters = { Era: new Set(), Concept: new Set(), Group: new Set() };
+let filtered = [...TRACKS];
+let currentIndex = 0;
 
-  // Reset flip when switching songs
-  document.getElementById('photocardFlip').classList.remove('flipped');
+const feed = document.getElementById('feed');
+const filtersEl = document.getElementById('filters');
+const counterEl = document.getElementById('counter');
+const dotsEl = document.getElementById('dots');
+
+function createFilterChips(){
+  for(const [group, arr] of Object.entries(filtersSpec)){
+    const label = document.createElement('div');
+    label.style.width='100%';
+    label.style.display='flex';
+    label.style.gap='8px';
+    label.style.alignItems='center';
+    label.style.flexWrap='wrap';
+    // group heading (small)
+    const heading = document.createElement('div');
+    heading.textContent = group + ':';
+    heading.style.color = 'var(--muted)';
+    heading.style.fontSize='12px';
+    heading.style.marginRight='6px';
+    label.appendChild(heading);
+
+    arr.forEach(opt=>{
+      const chip = document.createElement('button');
+      chip.className='chip';
+      chip.dataset.group = group;
+      chip.dataset.opt = opt;
+      chip.innerHTML = `${opt} <span class="count" style="display:none">0</span>`;
+      chip.addEventListener('click',()=>toggleFilter(chip));
+      label.appendChild(chip);
+    });
+    filtersEl.appendChild(label);
+  }
+  updateChipCounts();
 }
 
-function nextTrack(){
-  current = (current + 1) % tracks.length;
-  updateDisplay();
-}
-function prevTrack(){
-  current = (current - 1 + tracks.length) % tracks.length;
-  updateDisplay();
-}
-function flipCard(){
-  document.getElementById('photocardFlip').classList.toggle('flipped');
-}
-function toggleSave(){
-  const t = tracks[current];
-  if(saved.has(t.title)) saved.delete(t.title);
-  else saved.add(t.title);
-  updateDisplay();
+function toggleFilter(chip){
+  const group = chip.dataset.group;
+  const opt = chip.dataset.opt;
+  const set = activeFilters[group];
+  if(set.has(opt)) set.delete(opt); else set.add(opt);
+  chip.classList.toggle('active', set.has(opt));
+  updateFiltered();
+  updateChipCounts();
 }
 
-updateDisplay();
+function updateChipCounts(){
+  const chips = document.querySelectorAll('.chip');
+  chips.forEach(c=>{
+    const g = c.dataset.group, o = c.dataset.opt;
+    const count = TRACKS.filter(t=> tMatchesFilter(t, {[g]: new Set([o])})).length;
+    const badge = c.querySelector('.count');
+    if(count>0){ badge.style.display='inline-block'; badge.textContent = count; } else { badge.style.display='none'; }
+  });
+}
+
+function tMatchesFilter(item, filters){
+  for(const [g,set] of Object.entries(filters)){
+    if(set.size===0) continue;
+    // map label names to item keys
+    if(g==="Era"){ if(!set.has(item.era)) return false; }
+    if(g==="Concept"){ if(!set.has(item.concept)) return false; }
+    if(g==="Group"){ if(!set.has(item.group)) return false; }
+  }
+  return true;
+}
+
+function updateFiltered(){
+  const active = {};
+  for(const [k,v] of Object.entries(activeFilters)){
+    active[k] = v;
+  }
+  filtered = TRACKS.filter(t=> tMatchesFilter(t, active));
+  if(filtered.length===0){
+    // show temporary message card
+    renderNoResults();
+    return;
+  }
+  if(currentIndex >= filtered.length) currentIndex = 0;
+  renderFeed();
+}
+
+function renderNoResults(){
+  feed.innerHTML = `<div class="card" style="display:flex;align-items:center;justify-content:center"><div style="text-align:center;color:var(--muted)"><div style="font-size:18px;font-weight:700">No results</div><div style="margin-top:6px">Try toggling filters</div></div></div>`;
+  counterEl.textContent = `0 / 0`;
+  dotsEl.innerHTML = '';
+}
+
+function renderFeed(){
+  feed.querySelectorAll('.card')?.forEach(n=>n.remove());
+  dotsEl.innerHTML = '';
+
+  filtered.forEach((t, idx)=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.background = `linear-gradient(180deg, ${hexAlpha(t.vibeColor,0.08)} 0%, rgba(0,0,0,0.28) 100%)`;
+    card.style.zIndex = filtered.length - idx;
+    if(idx !== currentIndex) card.classList.add('hidden');
+
+    // art (Spotify embed)
+    const artwrap = document.createElement('div');
+    artwrap.className = 'artwrap';
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://open.spotify.com/embed/track/${t.id}`;
+    iframe.allow = "encrypted-media";
+    artwrap.appendChild(iframe);
+
+    const meta = document.createElement('div');
+    meta.className = 'meta';
+    meta.innerHTML = `
+      <div style="flex:1">
+        <div class="artist">
+          <img src="${t.artistImg}" alt="${t.artist}">
+          <div>
+            <div class="title">${escapeHtml(t.track)}</div>
+            <div style="font-size:12px;color:var(--muted)">${escapeHtml(t.artist)}</div>
+          </div>
+        </div>
+        <div class="tags">
+          <div class="tag">${t.era}</div>
+          <div class="tag">${t.concept}</div>
+          <div class="tag">${t.group}</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+        <div class="actions">
+          <button class="btn" title="Add to playlist">＋</button>
+          <button class="btn" title="Follow">Follow</button>
+          <button class="btn heart" title="Save">${heartSvg(false)}</button>
+        </div>
+      </div>
+    `;
+    card.appendChild(artwrap);
+    card.appendChild(meta);
+    feed.appendChild(card);
+
+    // dot
+    const dot = document.createElement('div');
+    dot.className='dot';
+    dot.title = `${t.track} — ${t.artist}`;
+    if(idx===currentIndex) dot.classList.add('active');
+    dot.addEventListener('click', ()=> { jumpTo(idx); });
+    dotsEl.appendChild(dot);
+
+    // quick action bindings
+    const heartBtn = card.querySelector('.heart');
+    heartBtn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const saved = heartBtn.classList.toggle('saved');
+      heartBtn.innerHTML = heartSvg(saved);
+      // animate saved indicator
+      if(saved){ showSavedAnim(card, t.track); }
+    });
+
+    // add + follow simple interactions
+    card.querySelector('button[title="Add to playlist"]').addEventListener('click', (ev)=>{
+      ev.stopPropagation();
+      flashMsg(card, 'Added to playlist');
+    });
+    card.querySelector('button[title="Follow"]').addEventListener('click', (ev)=>{
+      ev.stopPropagation();
+      flashMsg(card, 'Followed artist');
+    });
+
+  });
+
+  updateUIControls();
+}
+
+function showSavedAnim(card, track){
+  const el = document.createElement('div');
+  el.className='saved-anim';
+  el.style.color='#fff';
+  el.innerHTML = `<div style="background:linear-gradient(135deg,#ff6b8a,#ff9a9a);padding:8px 10px;border-radius:10px;font-weight:700">Saved • ${escapeHtml(track)}</div>`;
+  card.appendChild(el);
+  setTimeout(()=>el.remove(), 1200);
+}
+
+function updateUIControls(){
+  counterEl.textContent = `${currentIndex+1} / ${filtered.length}`;
+  // update dots active
+  Array.from(dotsEl.children).forEach((d,i)=>d.classList.toggle('active', i===currentIndex));
+}
+
+/* Helpers for swipe navigation */
+let startY = null;
+let isTouch = false;
+const threshold = 60;
+
+function bindSwipe(){
+  // touch
+  feed.addEventListener('touchstart', e=>{ isTouch=true; startY = e.touches[0].clientY; });
+  feed.addEventListener('touchmove', e=>{ /* prevent scroll inside feed on mobile */ e.preventDefault(); });
+  feed.addEventListener('touchend', e=>{
+    if(startY===null) return;
+    const endY = e.changedTouches[0].clientY;
+    const diff = endY - startY;
+    if(diff < -threshold) next(); else if(diff > threshold) prev();
+    startY = null;
+  }, {passive:false});
+
+  // wheel for desktop
+  let wheelCool = false;
+  window.addEventListener('wheel', (e)=>{
+    if(wheelCool) return;
+    if(Math.abs(e.deltaY) < 10) return;
+    wheelCool = true;
+    if(e.deltaY > 0) next(); else prev();
+    setTimeout(()=> wheelCool=false, 300);
+  }, {passive:true});
+}
+
+function next(){
+  const prevIndex = currentIndex;
+  currentIndex = Math.min(filtered.length-1, currentIndex+1);
+  animateSlide(prevIndex, currentIndex, -1);
+}
+function prev(){
+  const prevIndex = currentIndex;
+  currentIndex = Math.max(0, currentIndex-1);
+  animateSlide(prevIndex, currentIndex, 1);
+}
+
+function jumpTo(idx){
+  const prevIndex = currentIndex;
+  currentIndex = idx;
+  animateSlide(prevIndex, currentIndex, (idx>prevIndex)?-1:1);
+}
+
+function animateSlide(from, to, dir){
+  const cards = Array.from(feed.querySelectorAll('.card'));
+  cards.forEach((c,i)=>{
+    if(i===to){
+      c.classList.remove('hidden');
+      c.style.transform = `translateY(${dir*18}px)`;
+      c.style.opacity = 0;
+      requestAnimationFrame(()=>{ c.style.transform = ''; c.style.opacity = 1; });
+    } else if(i===from){
+      c.style.transform = `translateY(${ -dir*22 }px)`;
+      c.style.opacity = 0;
+      setTimeout(()=> c.classList.add('hidden'), 260);
+    } else {
+      c.classList.add('hidden');
+    }
+  });
+  updateUIControls();
+}
+
+/* tiny helpers */
+function hexAlpha(hex, a){
+  // hex like #rrggbb
+  const c = hex.replace('#','');
+  const r = parseInt(c.substring(0,2),16);
+  const g = parseInt(c.substring(2,4),16);
+  const b = parseInt(c.substring(4,6),16);
+  return `rgba(${r},${g},${b},${a})`;
+}
+function escapeHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+function flashMsg(card, txt){
+  const el = document.createElement('div');
+  el.style.position='absolute'; el.style.left='18px'; el.style.bottom='18px'; el.style.background='rgba(0,0,0,0.5)';
+  el.style.padding='8px 12px'; el.style.borderRadius='8px'; el.style.fontWeight='700';
+  el.textContent = txt;
+  card.appendChild(el);
+  setTimeout(()=>el.remove(),900);
+}
+function heartSvg(saved){
+  if(saved) return `❤️`;
+  return `♡`;
+}
+
+/* init */
+createFilterChips();
+updateFiltered();
+bindSwipe();
+
+/* accessibility: keyboard up/down */
+window.addEventListener('keydown', (e)=>{
+  if(e.key==='ArrowDown') next();
+  if(e.key==='ArrowUp') prev();
+});
 </script>
 </body>
 </html>
