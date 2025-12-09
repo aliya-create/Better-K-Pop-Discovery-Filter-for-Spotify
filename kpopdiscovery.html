@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>K-Pop Discovery</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      background: linear-gradient(to bottom, #000, transparent);
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .card {
+      width: 320px;
+      height: 420px;
+      perspective: 1000px;
+      margin-bottom: 2rem;
+    }
+
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+      cursor: pointer;
+    }
+
+    .card:hover .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      backface-visibility: hidden;
+    }
+
+    .card-front img, .card-back img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .card-back {
+      transform: rotateY(180deg);
+      background: linear-gradient(to bottom right, #111, #333);
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .filters button {
+      background: #222;
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+
+    .filters button:hover, .filters .active {
+      background: #00ff99;
+      color: #000;
+      font-weight: bold;
+    }
+
+    .song-details {
+      text-align: center;
+    }
+
+    .song-details h2 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    .song-details p {
+      color: #bbb;
+      margin-top: 0.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .actions button {
+      background: #222;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      color: #fff;
+      font-size: 1.25rem;
+      transition: 0.3s;
+    }
+
+    .actions button:hover {
+      background: #00ff99;
+      color: #000;
+      transform: scale(1.1);
+    }
+
+    footer {
+      margin-top: 1rem;
+      color: #888;
+      font-size: 0.8rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>✨ K-Pop Discovery</h1>
+    <div>
+      <button style="background:none;border:none;color:white;font-size:1rem;">🏆</button>
+      <button style="background:none;border:none;color:white;font-size:1rem;">🎤</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Filters -->
+    <div class="filters">
+      <button class="active">All Eras</button>
+      <button>2nd Gen</button>
+      <button>3rd Gen</button>
+      <button>4th Gen</button>
+      <button>Performance</button>
+      <button>Dark</button>
+      <button>Bright</button>
+      <button>Healing</button>
+    </div>
+
+    <!-- Song Card (SHINee example) -->
+    <div class="card">
+      <div class="card-inner">
+        <div class="card-front">
+          <img src="https://i.scdn.co/image/ab67616d0000b2737b2a191ee8bd10475a2b3f8a" alt="Sherlock Album Cover">
+        </div>
+        <div class="card-back">
+          <img src="https://i.scdn.co/image/ab6761610000e5eb2f854dfb0e634f9a8ec1e894" alt="SHINee Artist Photo">
+        </div>
+      </div>
+    </div>
+
+    <div class="song-details">
+      <h2>Sherlock</h2>
+      <p>by SHINee</p>
+      <p style="font-size:0.9rem;color:#aaa;">Concept: Performance • Era: 2nd Gen</p>
+    </div>
+
+    <!-- Buttons -->
+    <div class="actions">
+      <button>❤️</button>
+      <button>➕</button>
+      <button>👤</button>
+    </div>
+
+    <footer>
+      Swipe feature & filters simulated for HTML version.
+    </footer>
+  </div>
+
+  <script>
+    // Basic image flipping already handled by CSS hover effect
+  </script>
+</body>
+</html>
