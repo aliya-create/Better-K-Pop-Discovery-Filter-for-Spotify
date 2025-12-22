@@ -1,6 +1,6 @@
 ## Better K‑Pop Discovery Filter for Spotify
 
-A mini‑MVP that helps K‑Pop fans find the *right* tracks in under 2 minutes using fandom language – era, concept, and group type; instead of generic playlists.
+A mini‑MVP that helps K‑Pop fans find the *right* tracks in under 2 minutes using fandom language : era, concept, and group type; instead of generic playlists.
 
 👉 **Live demo:**  
 https://aliya-create.github.io/Better-K-Pop-Discovery-Filter-for-Spotify/
