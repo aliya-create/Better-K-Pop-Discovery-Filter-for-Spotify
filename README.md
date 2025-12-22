@@ -1,45 +1,52 @@
-K-Pop Discovery Filter for Spotify
-👉 Live Demo site: https://aliya-create.github.io/Better-K-Pop-Discovery-Filter-for-Spotify/
+##Better K‑Pop Discovery Filter for Spotify
 
-The Problem
-K-pop fans currently waste 10+ minutes per discovery session jumping between:
+A mini‑MVP that helps K‑Pop fans find the *right* tracks in under 2 minutes using fandom language – era, concept, and group type; instead of generic playlists.
 
-1. Generic Spotify playlists
-2. YouTube concept searches
-3. Twitter recommendations
-4. Back to Spotify to actually play the music
+👉 **Live demo:**  
+https://aliya-create.github.io/Better-K-Pop-Discovery-Filter-for-Spotify/
 
-Why? Current streaming services are playlist-centric, but fans think in fandom taxonomies:
+## The Problem
 
-1. Era (2nd Gen, 3rd Gen, 4th Gen)
-2. Concept (Dark, Bright, Healing, Performance)
-3. Group Type (Boy Group, Girl Group, Solo, Co-ed)
+K‑Pop fans currently bounce between:
 
-The Solution
-A dedicated K-pop discovery surface with smart filters and vertical swipe navigation like TikTok, but for music discovery.
-Key Features
+- Generic Spotify playlists  
+- YouTube concept / stage searches  
+- Social recommendations (X/Twitter, TikTok, Insta)  
+- Then back to Spotify to actually listen
 
-1. Live Spotify Embeds — Real player with 30-sec previews
-2. Smart Filters — Era (2nd/3rd/4th Gen) + Concept (Dark/Bright/Healing/Performance) + Group Type (Boy/Girl/Solo)
-3. Swipeable Feed — Vertical swipe navigation (mobile) + mouse wheel (desktop) + keyboard arrows
-4. Quick Actions — Save, Add to Playlist, Follow Artist with instant feedback
-5. Artist Photos — High-quality images with era/concept/group tags
+Streaming apps are **playlist‑centric**, but fans are **era‑ and concept‑centric**, especially multi‑stans trying to keep up with 2nd/3rd/4th gen groups.
 
-Context & Research
+## The Solution
 
-Market Opportunity
-360% growth in global K-pop streams (2018-2024)
-5.4M saves on Spotify's K-Pop ON! playlists
-Target demo: 18-34 year olds, mobile-first, multi-stans
+A **K‑Pop‑only discovery surface** that sits on top of Spotify and speaks fandom language.
 
-User Insights
-Fans use fandom taxonomies to describe music taste
-Era/Concept/Mood are primary discovery filters
-Current playlists feel too generic and uncurated
-Fans want to collect and organize tracks like photocards
+**Core idea:** Pick your Era + Concept + Group Type → get a short vertical feed of tracks you can swipe through and save instantly.
 
-Competitive Gap
-Apple Music: Only has genre playlists
-YouTube Music: Video-first, weak audio discovery
-Spotify advantage: Best recommendation engine + creator tools
+## Key Features
 
+- **Live Spotify embeds**  
+  30‑second previews with play/pause right inside the feed.
+
+- **Smart filters**  
+  - Era: 2nd Gen / 3rd Gen / 4th Gen  
+  - Concept: Dark / Bright / Healing / Performance  
+  - Group type: Boy Group / Girl Group / Solo / Co-ed
+
+- **Swipeable feed**  
+  - Vertical swipe on mobile  
+  - Mouse wheel + keyboard arrows on desktop  
+
+- **Quick actions**  
+  Save to library, add to playlist, and follow artist with immediate feedback.
+
+- **Artist context**  
+  High‑quality photos and tags showing era, concept, and group type, so the feed feels like browsing photocards, not a plain list.
+
+  ## Why This Matters
+
+- K‑Pop streams have grown massively in the last few years, and Spotify’s K‑Pop playlists collect millions of saves.  
+- Fans already organize their taste around Era / Concept / Mood – the UI just needs to catch up.  
+- For a product or growth team, this mini‑MVP shows how to:
+  - Translate **qualitative fandom behavior** into filters and UX.  
+  - Use a **short, focused flow** to cut time‑to‑first‑new‑track.  
+  - Build a feature that could plug into existing recommendation systems.
